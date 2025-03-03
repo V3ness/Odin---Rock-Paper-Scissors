@@ -1,24 +1,14 @@
 let humanScore = 0;
 let computerScore = 0;
+const rockButton = document.getElementById('btn-rock');
+const paperButton = document.getElementById('btn-paper');
+const scissorsButton = document.getElementById('btn-scissors');
 
 function getComputerChoice() {
     let randomChoice = Math.floor(Math.random() * 3);
     if (randomChoice === 0) {
         return 'Rock';
     } else if (randomChoice === 1) {
-        return 'Paper';
-    } else {
-        return 'Scissors';
-    }
-}
-
-function getHumanChoice() {
-    let message = 'Enter your choice (1, 2 or 3)';
-    let humanChoice = prompt(message);
-
-    if (humanChoice === '1') {
-        return 'Rock';
-    } else if (humanChoice === '2') {
         return 'Paper';
     } else {
         return 'Scissors';
@@ -39,17 +29,30 @@ function playRound(humanChoice, computerChoice) {
         console.log('Human Score: ' + humanScore + '| Computer Score: ' + computerScore);
     } else {
         console.log('Draw!')
-    }    
-}
+    }
 
-function playGame(round) {
-    for (let i = 0; i < round; i++) {
-        const humanSelection = getHumanChoice()
-        const computerSelection = getComputerChoice()
-        
-        playRound(humanSelection, computerSelection)
+    result.innerHTML = '<p>Human Score: ' + humanScore + ' | Computer Score: ' + computerScore + '</p>';
+    
+    if (humanScore === 5) {
+        alert("Human reach 5 points. Human Wins!");
+        location.reload();
+    } else if (computerScore === 5) {
+        alert("Computer reach 5 points. Computer Wins!");
+        location.reload();
     }
 }
 
+function handleButtonClick(event) {
+    const playerChoice = event.target.id.replace('btn-', '');
+    playRound(playerChoice, getComputerChoice());
+}
 
-playGame(5)
+const resultContainer = document.querySelector('#display-result');
+const result = document.createElement("div");
+result.classList.add("result");
+result.innerHTML = '<p>Human Score: ' + humanScore + ' | Computer Score: ' + computerScore + '</p>';
+
+rockButton.addEventListener('click', handleButtonClick);
+paperButton.addEventListener('click', handleButtonClick);
+scissorsButton.addEventListener('click', handleButtonClick);
+resultContainer.appendChild(result)
